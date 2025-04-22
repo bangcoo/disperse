@@ -1,24 +1,27 @@
 import { http, createConfig } from "wagmi";
 import * as chains from "wagmi/chains";
-import { coinbaseWallet, injected, metaMask, walletConnect } from "wagmi/connectors";
+import { injected, metaMask } from "wagmi/connectors";
+import rpcs from "./rpcurl";
 
 const allChains = Object.values(chains).filter(
-  (chain): chain is typeof chains.mainnet =>
-    typeof chain === 'object' && chain !== null && 'id' in chain
+  (chain) => typeof chain === "object" && chain !== null && "id" in chain
+);
+export const transports = Object.fromEntries(
+  allChains.map((chain) => {
+    const rpcFlag = rpcs?.[chain.id];
+
+    if (rpcFlag) {
+      return [chain.id, http(rpcFlag)];
+    }
+    return [chain.id, http()];
+  })
 );
 
 export const config = createConfig({
   // @ts-ignore
   chains: allChains,
-  connectors: [
-    injected(),
-    metaMask(),
-    coinbaseWallet(),
-    walletConnect({ projectId: import.meta.env.VITE_WC_PROJECT_ID || "YOUR_PROJECT_ID" }),
-  ],
-  transports: Object.fromEntries(
-    allChains.map(chain => [chain.id, http()])
-  ),
+  connectors: [injected(), metaMask()],
+  transports: transports,
 });
 
 declare module "wagmi" {
