@@ -85,7 +85,7 @@ const Header = ({ chainId, address }: HeaderProps) => {
           </svg>
         </div>
         <h1>
-          disperse
+          disperse token
           <sup ref={networkNameRef} onClick={handleNetworkClick}>
             {networkName(chainId)?.toLowerCase()}
           </sup>
