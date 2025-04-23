@@ -10,7 +10,15 @@ interface DisperseAddressesProps {
   total: bigint;
 }
 
-const DisperseAmount = ({ amount, symbol, decimals }: { amount: bigint; symbol: string; decimals: number }) => {
+const DisperseAmount = ({
+  amount,
+  symbol,
+  decimals,
+}: {
+  amount: bigint;
+  symbol: string;
+  decimals: number;
+}) => {
   return (
     <div>
       {formatUnits(amount, decimals)} <span className="sc">{symbol}</span>
@@ -18,7 +26,14 @@ const DisperseAmount = ({ amount, symbol, decimals }: { amount: bigint; symbol: 
   );
 };
 
-const DisperseAddresses = ({ recipients, symbol, decimals, balance, left, total }: DisperseAddressesProps) => {
+const DisperseAddresses = ({
+  recipients,
+  symbol,
+  decimals,
+  balance,
+  left,
+  total,
+}: DisperseAddressesProps) => {
   return (
     <div>
       <ul>
@@ -34,7 +49,11 @@ const DisperseAddresses = ({ recipients, symbol, decimals, balance, left, total 
             <div className="flex">
               <div>{addr.address}</div>
               <div className="expand bar" />
-              <DisperseAmount amount={addr.value} symbol={symbol} decimals={decimals} />
+              <DisperseAmount
+                amount={addr.value}
+                symbol={symbol}
+                decimals={decimals}
+              />
             </div>
           </li>
         ))}
@@ -45,14 +64,22 @@ const DisperseAddresses = ({ recipients, symbol, decimals, balance, left, total 
           <div className="flex">
             <div>total</div>
             <div className="expand" />
-            <DisperseAmount amount={total} symbol={symbol} decimals={decimals} />
+            <DisperseAmount
+              amount={total}
+              symbol={symbol}
+              decimals={decimals}
+            />
           </div>
         </li>
         <li className="accent">
           <div className="flex">
             <div>your balance</div>
             <div className="expand" />
-            <DisperseAmount amount={balance} symbol={symbol} decimals={decimals} />
+            <DisperseAmount
+              amount={balance}
+              symbol={symbol}
+              decimals={decimals}
+            />
           </div>
         </li>
         <li className="accent">

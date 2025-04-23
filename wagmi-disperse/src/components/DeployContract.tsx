@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import type { BaseError } from "viem";
-import { useBytecode, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
+import {
+  useBytecode,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from "wagmi";
 import { disperse_createx } from "../deploy";
 import { createXAbi } from "../generated";
 import { explorerTx, networkName } from "../networks";
@@ -17,7 +21,9 @@ const DeployContract = ({ chainId, onSuccess }: DeployContractProps) => {
   const [isDeploying, setIsDeploying] = useState(false);
   const [txHash, setTxHash] = useState<`0x${string}` | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const [deployedAddress, setDeployedAddress] = useState<`0x${string}` | null>(null);
+  const [deployedAddress, setDeployedAddress] = useState<`0x${string}` | null>(
+    null
+  );
 
   // Use CreateX to deploy the contract - use generic writeContract to set address for any chain
   const { writeContract, isPending, isError, error } = useWriteContract();
@@ -27,7 +33,11 @@ const DeployContract = ({ chainId, onSuccess }: DeployContractProps) => {
     if (isError && error && isDeploying) {
       // This catches "user rejected the request" errors when transaction is cancelled in wallet
       console.log("Deployment error detected:", error);
-      setErrorMessage((error as BaseError).shortMessage || error.message || "Transaction rejected");
+      setErrorMessage(
+        (error as BaseError).shortMessage ||
+          error.message ||
+          "Transaction rejected"
+      );
       setIsDeploying(false);
     }
   }, [isError, error, isDeploying]);
@@ -80,7 +90,11 @@ const DeployContract = ({ chainId, onSuccess }: DeployContractProps) => {
   useEffect(() => {
     if (txError && txHash) {
       console.log("Transaction error detected:", txError);
-      setErrorMessage((txError as BaseError).shortMessage || txError.message || "Transaction failed");
+      setErrorMessage(
+        (txError as BaseError).shortMessage ||
+          txError.message ||
+          "Transaction failed"
+      );
       setIsDeploying(false);
     }
   }, [txError, txHash]);
@@ -91,7 +105,10 @@ const DeployContract = ({ chainId, onSuccess }: DeployContractProps) => {
 
     // If contract is already deployed at expected address, just notify success
     if (isAlreadyDeployed) {
-      console.log("Contract already deployed at expected address:", expectedAddress);
+      console.log(
+        "Contract already deployed at expected address:",
+        expectedAddress
+      );
       setDeployedAddress(expectedAddress);
       onSuccess?.(expectedAddress);
       setIsDeploying(false);
@@ -111,12 +128,19 @@ const DeployContract = ({ chainId, onSuccess }: DeployContractProps) => {
       // Deploy using CreateX's deployCreate2 for deterministic address
       deployCreate2({
         // Use the salt and initcode from deploy.ts
-        args: [disperse_createx.salt as `0x${string}`, disperse_createx.initcode as `0x${string}`],
+        args: [
+          disperse_createx.salt as `0x${string}`,
+          disperse_createx.initcode as `0x${string}`,
+        ],
         onSuccess(hash: `0x${string}`) {
           setTxHash(hash);
         },
         onError(error: Error) {
-          setErrorMessage((error as BaseError).shortMessage || error.message || "Deployment failed");
+          setErrorMessage(
+            (error as BaseError).shortMessage ||
+              error.message ||
+              "Deployment failed"
+          );
           setIsDeploying(false);
         },
         onSettled(data: unknown) {
@@ -130,7 +154,11 @@ const DeployContract = ({ chainId, onSuccess }: DeployContractProps) => {
       });
     } catch (error: any) {
       console.error("Deployment error:", error);
-      setErrorMessage((error as BaseError)?.shortMessage || error?.message || "Deployment failed");
+      setErrorMessage(
+        (error as BaseError)?.shortMessage ||
+          error?.message ||
+          "Deployment failed"
+      );
       setIsDeploying(false);
     }
   };
@@ -140,8 +168,14 @@ const DeployContract = ({ chainId, onSuccess }: DeployContractProps) => {
 
   // Add console log to track loading duration
   if (isCheckingContract) {
-    console.log("[DEPLOY] Checking contract bytecode at address:", expectedAddress);
-    console.log("[DEPLOY] Checking CreateX bytecode at address:", CREATEX_ADDRESS);
+    console.log(
+      "[DEPLOY] Checking contract bytecode at address:",
+      expectedAddress
+    );
+    console.log(
+      "[DEPLOY] Checking CreateX bytecode at address:",
+      CREATEX_ADDRESS
+    );
   }
 
   return (
@@ -155,25 +189,34 @@ const DeployContract = ({ chainId, onSuccess }: DeployContractProps) => {
       ) : isAlreadyDeployed ? (
         <div>
           <p>
-            a disperse contract was found on {networkName(chainId)?.toLowerCase() || "this network"} at the expected
-            address. you can use it directly.
+            a disperse contract was found on{" "}
+            {networkName(chainId)?.toLowerCase() || "this network"} at the
+            expected address. you can use it directly.
           </p>
           <div className="success">
-            contract address: <span className="contract-address">{expectedAddress}</span>
+            contract address:{" "}
+            <span className="contract-address">{expectedAddress}</span>
           </div>
           <div className="deployed-info">
-            <button onClick={() => window.location.reload()}>reload page</button>
+            <button onClick={() => window.location.reload()}>
+              reload page
+            </button>
           </div>
         </div>
       ) : !isCreateXDeployed ? (
         <div>
           <p>
-            cannot deploy disperse on {networkName(chainId)?.toLowerCase() || "this network"} because the CreateX factory
-            is not deployed.
+            cannot deploy disperse on{" "}
+            {networkName(chainId)?.toLowerCase() || "this network"} because the
+            CreateX factory is not deployed.
           </p>
           <div className="failed">
             you need to deploy CreateX first. visit{" "}
-            <a href="https://github.com/pcaversaccio/createx" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://github.com/pcaversaccio/createx"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               github.com/pcaversaccio/createx
             </a>{" "}
             for instructions.
@@ -182,7 +225,8 @@ const DeployContract = ({ chainId, onSuccess }: DeployContractProps) => {
       ) : (
         <>
           <p>
-            deploy the contract yourself using deterministic deployment. it will have the same address on any network.
+            deploy the contract yourself using deterministic deployment. it will
+            have the same address on any network.
           </p>
 
           <div className="transaction-button">
@@ -194,19 +238,30 @@ const DeployContract = ({ chainId, onSuccess }: DeployContractProps) => {
             />
 
             <div className="status">
-              {isDeploying && <div className="pending">preparing deployment...</div>}
+              {isDeploying && (
+                <div className="pending">preparing deployment...</div>
+              )}
               {isPending && <div className="pending">confirm in wallet...</div>}
-              {isConfirming && <div className="pending">deploying contract...</div>}
-              {isConfirmed && !deployedAddress && <div className="pending">finalizing deployment...</div>}
+              {isConfirming && (
+                <div className="pending">deploying contract...</div>
+              )}
+              {isConfirmed && !deployedAddress && (
+                <div className="pending">finalizing deployment...</div>
+              )}
               {isConfirmed && deployedAddress && (
                 <div className="success">
-                  contract deployed to: <span className="contract-address">{deployedAddress}</span>
+                  contract deployed to:{" "}
+                  <span className="contract-address">{deployedAddress}</span>
                 </div>
               )}
               {errorMessage && <div className="failed">{errorMessage}</div>}
               {txHash && (
                 <div className="hash">
-                  <a href={explorerTx(txHash, chainId)} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={explorerTx(txHash, chainId)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {txHash}
                   </a>
                 </div>
@@ -217,10 +272,13 @@ const DeployContract = ({ chainId, onSuccess }: DeployContractProps) => {
           {isConfirmed && deployedAddress && (
             <div className="deployed-info">
               <p>
-                contract deployed successfully! you can now use disperse on this network. reload the page to start using
-                the app with your newly deployed contract.
+                contract deployed successfully! you can now use disperse on this
+                network. reload the page to start using the app with your newly
+                deployed contract.
               </p>
-              <button onClick={() => window.location.reload()}>reload page</button>
+              <button onClick={() => window.location.reload()}>
+                reload page
+              </button>
             </div>
           )}
         </>

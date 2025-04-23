@@ -18,10 +18,10 @@ const Header = ({ chainId, address }: HeaderProps) => {
   });
   const { switchChain } = useSwitchChain();
   const config = useConfig();
-  
+
   // Get all chains from wagmi config
   const chains = config.chains;
-  
+
   // Format chain name to reasonable length
   const formatChainName = (name: string) => {
     return name
@@ -29,7 +29,7 @@ const Header = ({ chainId, address }: HeaderProps) => {
       .replace(" Network", "")
       .replace(" Chain", "");
   };
-  
+
   // Handle network name click
   const handleNetworkClick = () => {
     setIsNetworkMenuOpen(!isNetworkMenuOpen);
@@ -39,9 +39,9 @@ const Header = ({ chainId, address }: HeaderProps) => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        dropdownRef.current && 
+        dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node) &&
-        networkNameRef.current && 
+        networkNameRef.current &&
         !networkNameRef.current.contains(event.target as Node)
       ) {
         setIsNetworkMenuOpen(false);
@@ -50,12 +50,12 @@ const Header = ({ chainId, address }: HeaderProps) => {
 
     // Add event listener when dropdown is open
     if (isNetworkMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
-    
+
     // Cleanup
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isNetworkMenuOpen]);
 
@@ -85,11 +85,10 @@ const Header = ({ chainId, address }: HeaderProps) => {
           </svg>
         </div>
         <h1>
-          disperse token
+          disperse
           <sup ref={networkNameRef} onClick={handleNetworkClick}>
             {networkName(chainId)?.toLowerCase()}
           </sup>
-          
           {isNetworkMenuOpen && (
             <div ref={dropdownRef} className="chain-selector-dropdown">
               <div className="chain-selector-dropdown-inner">
@@ -115,8 +114,13 @@ const Header = ({ chainId, address }: HeaderProps) => {
         {address && (
           <div className="network-info">
             <div>
-              <a href={explorerAddr(address, chainId)} target="_blank" rel="noopener noreferrer">
-                {ensName || `${address.substring(0, 6)}...${address.substring(38)}`}
+              <a
+                href={explorerAddr(address, chainId)}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {ensName ||
+                  `${address.substring(0, 6)}...${address.substring(38)}`}
               </a>
               <a
                 href="#"

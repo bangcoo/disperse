@@ -8,10 +8,10 @@ export function ChainSelector() {
   const { switchChain } = useSwitchChain();
   const config = useConfig();
   const { isConnected } = useAccount();
-  
+
   // Get all chains from wagmi config
   const chains = config.chains;
-  
+
   // Get the current chain
   const currentChain = chains.find((chain) => chain.id === chainId);
 
@@ -23,26 +23,24 @@ export function ChainSelector() {
       .replace(" Network", "")
       .replace(" Chain", "");
   };
-  
+
   if (!isConnected) {
     return null;
   }
 
   return (
     <div className="chain-selector">
-      <button 
-        onClick={() => setIsOpen(!isOpen)} 
+      <button
+        onClick={() => setIsOpen(!isOpen)}
         className="chain-selector-button"
       >
         {currentChain ? (
-          <>
-            {formatChainName(currentChain.name)}
-          </>
+          <>{formatChainName(currentChain.name)}</>
         ) : (
           "Unsupported Chain"
         )}
       </button>
-      
+
       {isOpen && (
         <div className="chain-selector-dropdown">
           <div className="chain-selector-dropdown-inner">

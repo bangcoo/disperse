@@ -1,6 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { formatUnits, isAddress, parseUnits } from "viem";
-import { useAccount, useBalance, useChainId, useConfig, useConnect } from "wagmi";
+import {
+  useAccount,
+  useBalance,
+  useChainId,
+  useConfig,
+  useConnect,
+} from "wagmi";
 // Direct access to provider is needed for unsupported chains
 
 import CurrencySelector from "./components/CurrencySelector";
@@ -15,6 +21,8 @@ import { disperse_createx, disperse_legacy } from "./deploy";
 import { nativeSymbol, networkName, nativeCurrencyName } from "./networks";
 import type { Recipient, TokenInfo } from "./types";
 import { canDeployToNetwork, isDisperseContract } from "./utils/contractVerify";
+import { updateRpcUrl } from "./wagmi";
+import CustomRpc from "./components/CustomRpc";
 
 // Debug function to log state changes
 const debug = (message: string, data?: any) => {
@@ -35,7 +43,9 @@ function useRealChainId() {
     // Using direct ethereum provider for more reliable chain detection across all networks
     const handleChainChanged = (chainIdHex: string) => {
       const newChainId = Number.parseInt(chainIdHex, 16);
-      console.log(`Ethereum provider detected chain change to: ${newChainId} (from hex ${chainIdHex})`);
+      console.log(
+        `Ethereum provider detected chain change to: ${newChainId} (from hex ${chainIdHex})`
+      );
       setChainId(newChainId);
     };
 
@@ -48,7 +58,9 @@ function useRealChainId() {
           .request({ method: "eth_chainId" })
           .then((chainIdHex: string) => {
             const id = Number.parseInt(chainIdHex, 16);
-            console.log(`Initial ethereum chainId: ${id} (from hex ${chainIdHex})`);
+            console.log(
+              `Initial ethereum chainId: ${id} (from hex ${chainIdHex})`
+            );
             setChainId(id);
           })
           .catch((err: any) => console.error("Error getting chainId:", err));
@@ -82,11 +94,18 @@ function App() {
   });
   const { connectors, connect } = useConnect();
 
+  const currentChain = useMemo(
+    () => config.chains.find((chain: any) => chain.id === realChainId),
+    [config, realChainId]
+  );
+
   // Determine if the current chain is supported
-  const isChainSupported = realChainId ? config.chains.some((chain: any) => chain.id === realChainId) : false;
+  const isChainSupported = realChainId ? !!currentChain : false;
 
   // Track custom deployed contract address
-  const [customContractAddress, setCustomContractAddress] = useState<`0x${string}` | undefined>(undefined);
+  const [customContractAddress, setCustomContractAddress] = useState<
+    `0x${string}` | undefined
+  >(undefined);
 
   // Get possible contract addresses
 
@@ -100,7 +119,10 @@ function App() {
     { address: legacyDisperseAddress, label: "legacy" },
     { address: createxDisperseAddress, label: "createx" },
     { address: customContractAddress, label: "custom" },
-  ].filter((item) => !!item.address) as { address: `0x${string}`; label: string }[];
+  ].filter((item) => !!item.address) as {
+    address: `0x${string}`;
+    label: string;
+  }[];
 
   // For debugging - show all potential addresses we're checking
   useEffect(() => {
@@ -111,7 +133,10 @@ function App() {
   const [loadingAddresses, setLoadingAddresses] = useState<boolean>(true);
 
   // Track address verified as having a working Disperse contract
-  const [verifiedAddress, setVerifiedAddress] = useState<{ address: `0x${string}`; label: string } | null>(null);
+  const [verifiedAddress, setVerifiedAddress] = useState<{
+    address: `0x${string}`;
+    label: string;
+  } | null>(null);
 
   // Track last verified chain to prevent redundant checks
   const lastCheckedChainIdRef = useRef<number | null>(null);
@@ -124,7 +149,8 @@ function App() {
 
     const checkAddresses = async () => {
       // Set as checking to avoid duplicate checks
-      lastCheckedChainIdRef.current = realChainId !== undefined ? realChainId : null;
+      lastCheckedChainIdRef.current =
+        realChainId !== undefined ? realChainId : null;
       setLoadingAddresses(true);
       debug(`Starting contract verification on chain ${realChainId}`);
 
@@ -132,7 +158,9 @@ function App() {
       const allAddresses = [
         { address: legacyDisperseAddress, label: "legacy" },
         { address: createxDisperseAddress, label: "createx" },
-        ...(customContractAddress ? [{ address: customContractAddress, label: "custom" }] : []),
+        ...(customContractAddress
+          ? [{ address: customContractAddress, label: "custom" }]
+          : []),
       ];
 
       for (const addrInfo of allAddresses) {
@@ -144,7 +172,9 @@ function App() {
           const provider = (window as any).ethereum;
           if (!provider) continue;
 
-          debug(`Checking contract at ${addrInfo.label} address: ${addrInfo.address}`);
+          debug(
+            `Checking contract at ${addrInfo.label} address: ${addrInfo.address}`
+          );
 
           // Simple direct request without retries
           const code = await provider
@@ -153,17 +183,25 @@ function App() {
               params: [addrInfo.address, "latest"],
             })
             .catch((err: any) => {
-              console.warn(`Error checking bytecode for ${addrInfo.address}:`, err);
+              console.warn(
+                `Error checking bytecode for ${addrInfo.address}:`,
+                err
+              );
               return null;
             });
 
           console.log(
-            `[DEBUG-CODE] Chain ${realChainId}, Address ${addrInfo.address}, Code length: ${code ? code.length : 0}`,
+            `[DEBUG-CODE] Chain ${realChainId}, Address ${addrInfo.address}, Code length: ${code ? code.length : 0}`
           );
-          console.log(`[DEBUG-CODE] Code sample: ${code ? code.substring(0, 100) : "empty"}`);
+          console.log(
+            `[DEBUG-CODE] Code sample: ${code ? code.substring(0, 100) : "empty"}`
+          );
 
           if (code && code !== "0x" && isDisperseContract(code)) {
-            debug(`Found valid Disperse contract at ${addrInfo.label} address:`, addrInfo.address);
+            debug(
+              `Found valid Disperse contract at ${addrInfo.label} address:`,
+              addrInfo.address
+            );
             setVerifiedAddress(addrInfo);
             setLoadingAddresses(false);
             return;
@@ -247,7 +285,8 @@ function App() {
   const [sending, setSending] = useState<"ether" | "token" | null>(null); // Start with null, will be set properly later
   const [recipients, setRecipients] = useState<Recipient[]>([]);
   const [token, setToken] = useState<TokenInfo>({});
-  const walletStatus = status === "connected" ? `logged in as ${address}` : "please unlock wallet";
+  const walletStatus =
+    status === "connected" ? `logged in as ${address}` : "please unlock wallet";
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Log state changes when they occur
@@ -304,7 +343,8 @@ function App() {
     // Only update state if we found valid recipients and have the right prerequisites
     if (
       newRecipients.length &&
-      (sending === "ether" || (sending === "token" && token.address && token.decimals !== undefined))
+      (sending === "ether" ||
+        (sending === "token" && token.address && token.decimals !== undefined))
     ) {
       setAppState(AppState.ENTERED_AMOUNTS);
     }
@@ -325,7 +365,7 @@ function App() {
     if (sending === null) return; // Wait until currency is initialized
 
     debug(
-      `Wallet status: ${status}, isConnected: ${isConnected}, chainId: ${realChainId}, supported: ${isChainSupported}, contract: ${isContractDeployed}`,
+      `Wallet status: ${status}, isConnected: ${isConnected}, chainId: ${realChainId}, supported: ${isChainSupported}, contract: ${isContractDeployed}`
     );
 
     if (status === "disconnected") {
@@ -340,7 +380,9 @@ function App() {
       // Before showing the network unavailable message, check if we actually have a valid contract
       if (isContractDeployed) {
         // If we have a valid contract, skip the network unavailable message
-        debug(`Chain ${realChainId} has a valid Disperse contract despite not being in our built-in list`);
+        debug(
+          `Chain ${realChainId} has a valid Disperse contract despite not being in our built-in list`
+        );
 
         // Set to CONNECTED_TO_WALLET state and proceed as normal
         if (sending === "ether") {
@@ -366,7 +408,9 @@ function App() {
       }
 
       // Otherwise, the chain isn't supported and contract not deployed
-      debug(`Chain ${realChainId} is not fully supported or contract is not valid`);
+      debug(
+        `Chain ${realChainId} is not fully supported or contract is not valid`
+      );
       setAppState(AppState.NETWORK_UNAVAILABLE);
     } else if (isConnected) {
       if (sending === "ether") {
@@ -446,7 +490,7 @@ function App() {
         }
       }
     },
-    [parseAmounts, token, resetToken],
+    [parseAmounts, token, resetToken]
   );
 
   const selectToken = useCallback(
@@ -474,7 +518,7 @@ function App() {
         });
       });
     },
-    [parseAmounts],
+    [parseAmounts]
   );
 
   // Get native currency name for display
@@ -537,6 +581,16 @@ function App() {
     );
   };
 
+  const handleRpcChanged = useCallback(
+    (rpcUrl: string | undefined) => {
+      if (realChainId) {
+        updateRpcUrl(realChainId, rpcUrl);
+        window.location.reload();
+      }
+    },
+    [realChainId]
+  );
+
   return (
     <article>
       <Header chainId={realChainId} address={address} />
@@ -548,39 +602,60 @@ function App() {
         </section>
       )}
 
+      {realChainId && (
+        <section className="rpc-settings">
+          <CustomRpc chainId={realChainId} onRpcChanged={handleRpcChanged} />
+        </section>
+      )}
+
       {appState === AppState.NETWORK_UNAVAILABLE && (
         <section>
           <h2>unsupported network</h2>
           {isBytecodeLoading ? (
             <p>
-              <span className="checking">checking if disperse contract is deployed on any address...</span>
+              <span className="checking">
+                checking if disperse contract is deployed on any address...
+              </span>
             </p>
           ) : isContractDeployed ? (
             <>
               <p>
-                disperse contract found at {verifiedAddress?.label} address, but this network isn't configured yet in
-                our app. reload the page to try again.
+                disperse contract found at {verifiedAddress?.label} address, but
+                this network isn't configured yet in our app. reload the page to
+                try again.
               </p>
               <div className="success">
                 <p>valid contract address: {verifiedAddress?.address}</p>
               </div>
-              <button onClick={() => window.location.reload()}>reload page</button>
+              <button onClick={() => window.location.reload()}>
+                reload page
+              </button>
             </>
           ) : !isConnected ? (
-            <p>connect your wallet to deploy the disperse contract on this network.</p>
+            <p>
+              connect your wallet to deploy the disperse contract on this
+              network.
+            </p>
           ) : (
             <>
               <p>
-                no disperse contract found on <em>{networkName(realChainId)?.toLowerCase() || "this network"}</em>. you
-                can deploy it yourself.
+                no disperse contract found on{" "}
+                <em>
+                  {networkName(realChainId)?.toLowerCase() || "this network"}
+                </em>
+                . you can deploy it yourself.
               </p>
-              <DeployContract chainId={realChainId} onSuccess={handleContractDeployed} />
+              <DeployContract
+                chainId={realChainId}
+                onSuccess={handleContractDeployed}
+              />
             </>
           )}
 
           <div className="network-info">
             <p>
-              network: {networkName(realChainId)?.toLowerCase() || "unknown"} (id: {realChainId})
+              network: {networkName(realChainId)?.toLowerCase() || "unknown"}{" "}
+              (id: {realChainId})
             </p>
             {verifiedAddress && (
               <p>
@@ -605,8 +680,11 @@ function App() {
           <CurrencySelector onSelect={selectCurrency} />
           {sending === "ether" && (
             <p>
-              you have {formatUnits(balanceData?.value || 0n, 18)} {getNativeCurrencyName()}
-              {balanceData?.value === 0n && realChainId && <span className="warning">(make sure to add funds)</span>}
+              you have {formatUnits(balanceData?.value || 0n, 18)}{" "}
+              {getNativeCurrencyName()}
+              {balanceData?.value === 0n && realChainId && (
+                <span className="warning">(make sure to add funds)</span>
+              )}
             </p>
           )}
         </section>
@@ -623,7 +701,8 @@ function App() {
           />
           {token.symbol && (
             <p className="mt">
-              you have {formatUnits(token.balance || 0n, token.decimals || 18)} {token.symbol}
+              you have {formatUnits(token.balance || 0n, token.decimals || 18)}{" "}
+              {token.symbol}
             </p>
           )}
         </section>
@@ -641,7 +720,10 @@ function App() {
           (sending === "token" && !!token.symbol)) && (
           <section>
             <h2>recipients and amounts</h2>
-            <p>enter one address and amount in {getSymbol()} on each line. supports any format.</p>
+            <p>
+              enter one address and amount in {getSymbol()} on each line.
+              supports any format.
+            </p>
             <div className="shadow">
               <textarea
                 ref={textareaRef}
@@ -690,17 +772,25 @@ function App() {
               : "disperse contract has allowance, you can send tokens now."}
           </p>
           <TransactionButton
-            title={(token.allowance ?? 0n) < getTotalAmount() ? "approve" : "revoke"}
-            action={(token.allowance ?? 0n) < getTotalAmount() ? "approve" : "deny"}
+            title={
+              (token.allowance ?? 0n) < getTotalAmount() ? "approve" : "revoke"
+            }
+            action={
+              (token.allowance ?? 0n) < getTotalAmount() ? "approve" : "deny"
+            }
             chainId={realChainId}
             recipients={recipients}
             token={token}
             contractAddress={verifiedAddress?.address}
-            className={(token.allowance ?? 0n) >= getTotalAmount() ? "secondary" : ""}
+            className={
+              (token.allowance ?? 0n) >= getTotalAmount() ? "secondary" : ""
+            }
           />
           <TransactionButton
             show={true}
-            disabled={getLeftAmount() < 0n || (token.allowance ?? 0n) < getTotalAmount()}
+            disabled={
+              getLeftAmount() < 0n || (token.allowance ?? 0n) < getTotalAmount()
+            }
             title="disperse token"
             action="disperseToken"
             message={getDisperseMessage()}

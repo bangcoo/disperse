@@ -30,5 +30,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <App />
       </QueryClientProvider>
     </WagmiProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );

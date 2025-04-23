@@ -7,7 +7,9 @@ interface CurrencySelectorProps {
 }
 
 const CurrencySelector = ({ onSelect }: CurrencySelectorProps) => {
-  const [selectedCurrency, setSelectedCurrency] = useState<"ether" | "token">("ether");
+  const [selectedCurrency, setSelectedCurrency] = useState<"ether" | "token">(
+    "ether"
+  );
   const chainId = useChainId();
 
   // Get native currency name for display

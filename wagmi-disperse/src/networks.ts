@@ -1,6 +1,4 @@
-import {
-  type Chain
-} from "wagmi/chains";
+import { type Chain } from "wagmi/chains";
 
 // Import all chains from wagmi
 import * as allWagmiChains from "wagmi/chains";
@@ -16,7 +14,10 @@ export function getChainById(chainId: number | undefined): Chain | undefined {
   return allChains.find((chain) => chain.id === chainId);
 }
 
-export function explorerTx(tx: string | undefined, chainId: number | undefined) {
+export function explorerTx(
+  tx: string | undefined,
+  chainId: number | undefined
+) {
   if (!tx || !chainId) return;
   const chain = getChainById(chainId);
   if (chain?.blockExplorers?.default) {
@@ -24,7 +25,10 @@ export function explorerTx(tx: string | undefined, chainId: number | undefined) 
   }
 }
 
-export function explorerAddr(addr: string | undefined, chainId: number | undefined) {
+export function explorerAddr(
+  addr: string | undefined,
+  chainId: number | undefined
+) {
   if (!addr || !chainId) return;
   const chain = getChainById(chainId);
   if (chain?.blockExplorers?.default) {
@@ -79,6 +83,8 @@ export function nativeCurrencyName(chainId: number | undefined) {
 
 // Get chain ID by name - useful for debugging and configuration
 export function getChainIdByName(name: string): number | undefined {
-  const chainByName = allChains.find((chain) => chain.name.toLowerCase() === name.toLowerCase());
+  const chainByName = allChains.find(
+    (chain) => chain.name.toLowerCase() === name.toLowerCase()
+  );
   return chainByName?.id;
 }

@@ -18,9 +18,17 @@ interface TokenLoaderProps {
   token?: TokenInfo; // Pass the current token to preserve state
 }
 
-const TokenLoader = ({ onSelect, onError, chainId, account, token }: TokenLoaderProps) => {
+const TokenLoader = ({
+  onSelect,
+  onError,
+  chainId,
+  account,
+  token,
+}: TokenLoaderProps) => {
   // Initialize tokenAddress with token.address if available
-  const [tokenAddress, setTokenAddress] = useState<`0x${string}` | "">(token?.address || "");
+  const [tokenAddress, setTokenAddress] = useState<`0x${string}` | "">(
+    token?.address || ""
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -133,7 +141,12 @@ const TokenLoader = ({ onSelect, onError, chainId, account, token }: TokenLoader
     args: [account as `0x${string}`, disperseContractAddress as `0x${string}`],
     chainId, // Explicitly set chainId from wallet
     query: {
-      enabled: isSubmitted && !!tokenAddress && !!account && !!disperseContractAddress && !!chainId,
+      enabled:
+        isSubmitted &&
+        !!tokenAddress &&
+        !!account &&
+        !!disperseContractAddress &&
+        !!chainId,
       retry: false,
     },
   });
@@ -175,15 +188,28 @@ const TokenLoader = ({ onSelect, onError, chainId, account, token }: TokenLoader
     if (!isSubmitted) return;
 
     // Check for errors and handle them
-    if (nameError || symbolError || decimalsError || balanceError || allowanceError) {
+    if (
+      nameError ||
+      symbolError ||
+      decimalsError ||
+      balanceError ||
+      allowanceError
+    ) {
       debug("Error loading token data");
 
       // Get the first error that occurred
-      const firstError = nameErrorObj || symbolErrorObj || decimalsErrorObj || balanceErrorObj || allowanceErrorObj;
+      const firstError =
+        nameErrorObj ||
+        symbolErrorObj ||
+        decimalsErrorObj ||
+        balanceErrorObj ||
+        allowanceErrorObj;
 
       // Format error message with shortMessage if available
       const errorMessage = firstError
-        ? (firstError as BaseError).shortMessage || firstError.message || "error loading token data"
+        ? (firstError as BaseError).shortMessage ||
+          firstError.message ||
+          "error loading token data"
         : "error loading token data";
 
       setErrorMessage(errorMessage);
@@ -261,12 +287,16 @@ const TokenLoader = ({ onSelect, onError, chainId, account, token }: TokenLoader
     }
 
     if (!disperseContractAddress) {
-      setErrorMessage("disperse contract address not available on this network");
+      setErrorMessage(
+        "disperse contract address not available on this network"
+      );
       return;
     }
 
     if (!isContractDeployed && !isBytecodeLoading) {
-      setErrorMessage("disperse contract code not found at the expected address");
+      setErrorMessage(
+        "disperse contract code not found at the expected address"
+      );
       return;
     }
 
@@ -277,7 +307,11 @@ const TokenLoader = ({ onSelect, onError, chainId, account, token }: TokenLoader
 
     setIsLoading(true);
     setIsSubmitted(true);
-    debug("Token loading started", { tokenAddress, account, disperseContractAddress });
+    debug("Token loading started", {
+      tokenAddress,
+      account,
+      disperseContractAddress,
+    });
   };
 
   return (

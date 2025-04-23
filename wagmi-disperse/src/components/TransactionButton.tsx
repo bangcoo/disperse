@@ -36,7 +36,8 @@ const TransactionButton = ({
   const [errorMessage, setErrorMessage] = useState("");
 
   // Use the contract address from props, falling back to legacy address if not provided
-  const contractAddress = customAddress || (disperse_legacy.address as `0x${string}`);
+  const contractAddress =
+    customAddress || (disperse_legacy.address as `0x${string}`);
 
   // Always consider the contract deployed if we're showing the button
   // The parent component (App.tsx) only shows this button when a contract is verified
@@ -44,16 +45,26 @@ const TransactionButton = ({
   const isBytecodeLoading = false;
 
   // Use generic writeContract for all operations so we can explicitly set the chainId and address
-  const { writeContract, isPending: isWritePending, isError: isWriteError, error: writeError } = useWriteContract();
+  const {
+    writeContract,
+    isPending: isWritePending,
+    isError: isWriteError,
+    error: writeError,
+  } = useWriteContract();
 
-  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
-    hash: txHash as `0x${string}` | undefined,
-  });
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({
+      hash: txHash as `0x${string}` | undefined,
+    });
 
   // Update error message when write fails with user-friendly error format
   useEffect(() => {
     if (isWriteError && writeError) {
-      setErrorMessage((writeError as BaseError).shortMessage || writeError.message || "Transaction failed");
+      setErrorMessage(
+        (writeError as BaseError).shortMessage ||
+          writeError.message ||
+          "Transaction failed"
+      );
     }
   }, [isWriteError, writeError]);
 
@@ -61,7 +72,9 @@ const TransactionButton = ({
     setErrorMessage("");
 
     if (!contractAddress) {
-      setErrorMessage("Disperse contract address not available for this network");
+      setErrorMessage(
+        "Disperse contract address not available for this network"
+      );
       return;
     }
 
@@ -82,17 +95,27 @@ const TransactionButton = ({
             address: contractAddress,
             abi: disperseAbi,
             functionName: "disperseEther",
-            args: [recipients.map((r) => r.address), recipients.map((r) => r.value)],
-            value: recipients.reduce((sum, r: Recipient) => BigInt(sum) + r.value, BigInt(0)),
+            args: [
+              recipients.map((r) => r.address),
+              recipients.map((r) => r.value),
+            ],
+            value: recipients.reduce(
+              (sum, r: Recipient) => BigInt(sum) + r.value,
+              BigInt(0)
+            ),
           },
           {
             onSuccess(hash) {
               setTxHash(hash);
             },
             onError(error) {
-              setErrorMessage((error as BaseError).shortMessage || error.message || "Transaction failed");
+              setErrorMessage(
+                (error as BaseError).shortMessage ||
+                  error.message ||
+                  "Transaction failed"
+              );
             },
-          },
+          }
         );
       } else if (action === "disperseToken" && token.address) {
         writeContract(
@@ -100,16 +123,24 @@ const TransactionButton = ({
             address: contractAddress,
             abi: disperseAbi,
             functionName: "disperseToken",
-            args: [token.address, recipients.map((r) => r.address), recipients.map((r) => r.value)],
+            args: [
+              token.address,
+              recipients.map((r) => r.address),
+              recipients.map((r) => r.value),
+            ],
           },
           {
             onSuccess(hash) {
               setTxHash(hash);
             },
             onError(error) {
-              setErrorMessage((error as BaseError).shortMessage || error.message || "Transaction failed");
+              setErrorMessage(
+                (error as BaseError).shortMessage ||
+                  error.message ||
+                  "Transaction failed"
+              );
             },
-          },
+          }
         );
       } else if (action === "approve" && token.address) {
         writeContract(
@@ -119,7 +150,9 @@ const TransactionButton = ({
             functionName: "approve",
             args: [
               contractAddress,
-              BigInt("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"), // MaxUint256
+              BigInt(
+                "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+              ), // MaxUint256
             ],
           },
           {
@@ -127,9 +160,13 @@ const TransactionButton = ({
               setTxHash(hash);
             },
             onError(error) {
-              setErrorMessage((error as BaseError).shortMessage || error.message || "Transaction failed");
+              setErrorMessage(
+                (error as BaseError).shortMessage ||
+                  error.message ||
+                  "Transaction failed"
+              );
             },
-          },
+          }
         );
       } else if (action === "deny" && token.address) {
         writeContract(
@@ -137,24 +174,29 @@ const TransactionButton = ({
             address: token.address,
             abi: erc20.abi,
             functionName: "approve",
-            args: [
-              contractAddress,
-              0n,
-            ],
+            args: [contractAddress, 0n],
           },
           {
             onSuccess(hash) {
               setTxHash(hash);
             },
             onError(error) {
-              setErrorMessage((error as BaseError).shortMessage || error.message || "Transaction failed");
+              setErrorMessage(
+                (error as BaseError).shortMessage ||
+                  error.message ||
+                  "Transaction failed"
+              );
             },
-          },
+          }
         );
       }
     } catch (error: any) {
       console.error("Transaction error:", error);
-      setErrorMessage((error as BaseError)?.shortMessage || error?.message || "Transaction failed");
+      setErrorMessage(
+        (error as BaseError)?.shortMessage ||
+          error?.message ||
+          "Transaction failed"
+      );
     }
   };
 
@@ -178,7 +220,11 @@ const TransactionButton = ({
       />
       <div className="status">
         {message && <div>{message}</div>}
-        {isBytecodeLoading && <div className="pending">checking if disperse contract is deployed...</div>}
+        {isBytecodeLoading && (
+          <div className="pending">
+            checking if disperse contract is deployed...
+          </div>
+        )}
         {!isBytecodeLoading && !isContractDeployed && !errorMessage && (
           <div className="failed">disperse contract not deployed</div>
         )}
@@ -189,7 +235,12 @@ const TransactionButton = ({
         {isConfirmed && <div className="success">transaction success</div>}
         {errorMessage && <div className="failed">{errorMessage}</div>}
         {txHash && (
-          <a className="hash" href={explorerTx(txHash, chainId)} target="_blank" rel="noopener noreferrer">
+          <a
+            className="hash"
+            href={explorerTx(txHash, chainId)}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {txHash}
           </a>
         )}
