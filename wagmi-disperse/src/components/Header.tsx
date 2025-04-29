@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, ChangeEvent, useMemo } from "react";
 import { useDisconnect, useEnsName, useSwitchChain, useConfig } from "wagmi";
 import { explorerAddr, networkName } from "../networks";
 
@@ -9,6 +9,7 @@ interface HeaderProps {
 
 const Header = ({ chainId, address }: HeaderProps) => {
   const [isNetworkMenuOpen, setIsNetworkMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
   const networkNameRef = useRef<HTMLElement>(null);
   const { disconnect } = useDisconnect();
@@ -59,6 +60,18 @@ const Header = ({ chainId, address }: HeaderProps) => {
     };
   }, [isNetworkMenuOpen]);
 
+  // input search
+  const handleInputSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value.toLowerCase());
+  };
+
+  // chains
+  const filteredChains = useMemo(() => {
+    return chains.filter((chain) =>
+      formatChainName(chain.name).toLowerCase().includes(searchTerm)
+    );
+  }, [chains, searchTerm]);
+
   return (
     <>
       <header>
@@ -91,13 +104,21 @@ const Header = ({ chainId, address }: HeaderProps) => {
           </sup>
           {isNetworkMenuOpen && (
             <div ref={dropdownRef} className="chain-selector-dropdown">
+              <input
+                type="text"
+                className="chain-selector-option-input"
+                placeholder="search"
+                onChange={handleInputSearch}
+                value={searchTerm}
+              />
               <div className="chain-selector-dropdown-inner">
-                {chains.map((chain) => (
+                {filteredChains.map((chain) => (
                   <button
                     key={chain.id}
                     onClick={() => {
                       switchChain({ chainId: chain.id });
                       setIsNetworkMenuOpen(false);
+                      setSearchTerm(""); // 清空搜索内容
                     }}
                     className={`chain-selector-option ${
                       chain.id === chainId ? "active" : ""

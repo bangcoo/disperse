@@ -3,10 +3,19 @@ import * as chains from "wagmi/chains";
 import { injected, metaMask } from "wagmi/connectors";
 import rpcUrls, { getBestRpcUrl } from "./rpcurl";
 
-// Filter out non-object values from chains
-const allChains = Object.values(chains).filter(
-  (chain) => typeof chain === "object" && chain !== null && "id" in chain
-);
+const seenIds = new Set();
+const allChains = Object.values(chains).filter((chain) => {
+  // Filter out non-object values from chains
+  if (typeof chain !== "object" || chain === null || !("id" in chain)) {
+    return false;
+  }
+
+  if (seenIds.has(chain.id)) {
+    return false;
+  }
+  seenIds.add(chain.id);
+  return true;
+});
 
 // Create transports using our custom RPC URLs
 export const transports = Object.fromEntries(
