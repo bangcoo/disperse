@@ -14,7 +14,7 @@ export default defineConfig({
         {
           name: "Disperse",
           address: {
-            [mainnet.id]: "0xD152f549545093347A162Dce210e7293f1452150",
+            [mainnet.id]: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2",
           },
         },
         {

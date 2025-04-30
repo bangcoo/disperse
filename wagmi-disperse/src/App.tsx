@@ -762,6 +762,25 @@ function App() {
           )}
         </section>
       )}
+      <article className="red">
+        <p className="donation">
+          <small>
+            If DisperseToken has been helpful to you, please consider donating
+            some USDT to support ongoing maintenance and development.
+          </small>
+        </p>
+        <p className="donation">
+          <small>
+            Donation address (BSC): 0x22157f7b43b36767e5f12c9f138ccffef1399e91
+          </small>
+        </p>
+        <p className="donation">
+          <small>
+            Your support helps keep this tool free and continuously improved.
+            Thank you!
+          </small>
+        </p>
+      </article>
 
       {appState >= AppState.ENTERED_AMOUNTS && sending === "token" && (
         <div>

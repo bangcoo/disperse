@@ -130,8 +130,12 @@ const CustomRpc: React.FC<RpcUrlInputProps> = ({ chainId, onRpcChanged }) => {
         <small>
           Prompt: Balance not loading or tokens not displaying? This is usually
           a node connection issue. You can visit https://ankr.com to apply for
-          your own node or check https://chainlist.org to find alternative
-          nodes.
+          your own node or check{" "}
+          <a
+            href={`https://chainlist.org/chain/${chainId}`}
+            target="_blank"
+          >{`https://chainlist.org/chain/${chainId}`}</a>{" "}
+          to find alternative nodes.
         </small>
       </p>
     </div>

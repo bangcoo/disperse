@@ -416,3 +416,9 @@ h1 .chain-selector-dropdown {
   transform: translateX(-50%);
   right: auto;
 }
+
+.donation {
+  line-height: 1.4rem;
+  margin-top: 5px;
+  margin-bottom: 0;
+}
