@@ -473,7 +473,7 @@ export const createXConfig = {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xD152f549545093347A162Dce210e7293f1452150)
+ * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2)
  */
 export const disperseAbi = [
   {
@@ -517,40 +517,40 @@ export const disperseAbi = [
 ] as const;
 
 /**
- * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xD152f549545093347A162Dce210e7293f1452150)
+ * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2)
  */
 export const disperseAddress = {
-  1: "0xD152f549545093347A162Dce210e7293f1452150", // mainnet
-  3: "0xD152f549545093347A162Dce210e7293f1452150", // ropsten
-  4: "0xD152f549545093347A162Dce210e7293f1452150", // rinkeby
-  5: "0xD152f549545093347A162Dce210e7293f1452150", // goerli
-  42: "0xD152f549545093347A162Dce210e7293f1452150", // kovan
-  56: "0xD152f549545093347A162Dce210e7293f1452150", // bsc mainnet
-  77: "0xD152f549545093347A162Dce210e7293f1452150", // poa sokol
-  99: "0xD152f549545093347A162Dce210e7293f1452150", // poa network
-  100: "0xD152f549545093347A162Dce210e7293f1452150", // xdai chain
-  137: "0xD152f549545093347A162Dce210e7293f1452150", // matic
-  163: "0xD152f549545093347A162Dce210e7293f1452150", // lightstreams
-  250: "0xD152f549545093347A162Dce210e7293f1452150", // fantom
-  42161: "0xD152f549545093347A162Dce210e7293f1452150", // arbitrum one
+  1: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // mainnet
+  3: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // ropsten
+  4: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // rinkeby
+  5: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // goerli
+  42: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // kovan
+  56: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // bsc mainnet
+  77: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // poa sokol
+  99: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // poa network
+  100: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // xdai chain
+  137: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // matic
+  163: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // lightstreams
+  250: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // fantom
+  42161: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // arbitrum one
   4689: "0xe3122e446Bf31036DA212375803f24b3dE96D0c9", // iotex
-  1284: "0xD152f549545093347A162Dce210e7293f1452150", // moonbeam
-  1285: "0xD152f549545093347A162Dce210e7293f1452150", // moonriver
-  42220: "0xD152f549545093347A162Dce210e7293f1452150", // celo
-  1666600000: "0xD152f549545093347A162Dce210e7293f1452150", // harmony
-  60: "0xD152f549545093347A162Dce210e7293f1452150", // gochain
-  128: "0xD152f549545093347A162Dce210e7293f1452150", // huobi
-  66: "0xD152f549545093347A162Dce210e7293f1452150", // okex
-  10: "0xD152f549545093347A162Dce210e7293f1452150", // optimism
-  84531: "0xD152f549545093347A162Dce210e7293f1452150", // base goerli
-  1101: "0xD152f549545093347A162Dce210e7293f1452150", // polygon zkevm
-  8453: "0xD152f549545093347A162Dce210e7293f1452150", // base mainnet
-  11155111: "0xD152f549545093347A162Dce210e7293f1452150", // sepolia
-  314: "0xD152f549545093347A162Dce210e7293f1452150", // filecoin
+  1284: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // moonbeam
+  1285: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // moonriver
+  42220: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // celo
+  1666600000: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // harmony
+  60: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // gochain
+  128: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // huobi
+  66: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // okex
+  10: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // optimism
+  84531: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // base goerli
+  1101: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // polygon zkevm
+  8453: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // base mainnet
+  11155111: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // sepolia
+  314: "0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2", // filecoin
 } as const;
 
 /**
- * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xD152f549545093347A162Dce210e7293f1452150)
+ * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2)
  */
 export const disperseConfig = {
   address: disperseAddress,
@@ -835,7 +835,7 @@ export const useWatchCreateXCreate3ProxyContractCreationEvent = /*#__PURE__*/ cr
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link disperseAbi}__
  *
- * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xD152f549545093347A162Dce210e7293f1452150)
+ * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2)
  */
 export const useWriteDisperse = /*#__PURE__*/ createUseWriteContract({
   abi: disperseAbi,
@@ -845,7 +845,7 @@ export const useWriteDisperse = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link disperseAbi}__ and `functionName` set to `"disperseTokenSimple"`
  *
- * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xD152f549545093347A162Dce210e7293f1452150)
+ * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2)
  */
 export const useWriteDisperseDisperseTokenSimple = /*#__PURE__*/ createUseWriteContract({
   abi: disperseAbi,
@@ -856,7 +856,7 @@ export const useWriteDisperseDisperseTokenSimple = /*#__PURE__*/ createUseWriteC
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link disperseAbi}__ and `functionName` set to `"disperseToken"`
  *
- * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xD152f549545093347A162Dce210e7293f1452150)
+ * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2)
  */
 export const useWriteDisperseDisperseToken = /*#__PURE__*/ createUseWriteContract({
   abi: disperseAbi,
@@ -867,7 +867,7 @@ export const useWriteDisperseDisperseToken = /*#__PURE__*/ createUseWriteContrac
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link disperseAbi}__ and `functionName` set to `"disperseEther"`
  *
- * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xD152f549545093347A162Dce210e7293f1452150)
+ * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2)
  */
 export const useWriteDisperseDisperseEther = /*#__PURE__*/ createUseWriteContract({
   abi: disperseAbi,
@@ -878,7 +878,7 @@ export const useWriteDisperseDisperseEther = /*#__PURE__*/ createUseWriteContrac
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link disperseAbi}__
  *
- * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xD152f549545093347A162Dce210e7293f1452150)
+ * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2)
  */
 export const useSimulateDisperse = /*#__PURE__*/ createUseSimulateContract({
   abi: disperseAbi,
@@ -888,7 +888,7 @@ export const useSimulateDisperse = /*#__PURE__*/ createUseSimulateContract({
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link disperseAbi}__ and `functionName` set to `"disperseTokenSimple"`
  *
- * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xD152f549545093347A162Dce210e7293f1452150)
+ * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2)
  */
 export const useSimulateDisperseDisperseTokenSimple = /*#__PURE__*/ createUseSimulateContract({
   abi: disperseAbi,
@@ -899,7 +899,7 @@ export const useSimulateDisperseDisperseTokenSimple = /*#__PURE__*/ createUseSim
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link disperseAbi}__ and `functionName` set to `"disperseToken"`
  *
- * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xD152f549545093347A162Dce210e7293f1452150)
+ * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2)
  */
 export const useSimulateDisperseDisperseToken = /*#__PURE__*/ createUseSimulateContract({
   abi: disperseAbi,
@@ -910,7 +910,7 @@ export const useSimulateDisperseDisperseToken = /*#__PURE__*/ createUseSimulateC
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link disperseAbi}__ and `functionName` set to `"disperseEther"`
  *
- * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xD152f549545093347A162Dce210e7293f1452150)
+ * [__View Contract on Ethereum Etherscan__](https://etherscan.io/address/0xc1d40b0883f590AaBB67FF10C6aD9FDB708BbCc2)
  */
 export const useSimulateDisperseDisperseEther = /*#__PURE__*/ createUseSimulateContract({
   abi: disperseAbi,
